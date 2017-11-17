@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">BETTING</string>
+
+    <string name="numbers">
+        \t\t\t\t
+        (1) (2) (3) (4) (5) (6) (7) (8) (9) (10)
+        (11) (12) (13) (14) (15) (16) (17) (18) (19) (20)
+        (21) (22) (23) (24) (25) (26) (27) (28) (29) (30)
+        (31) (32) (33) (34) (35) (36) (37) (38) (39) (40)
+        (41) (42) (43) (44) (45) (46) (47) (48) (49)</string>
+
+
+    <string name="game_str">
+        (1) (2) (3) (4) (5) (6) (7) (8) (9) (10)
+        (11) (12) (13) (14) (15) (16) (17) (18) (19) (20)
+        (21) (22) (23) (24) (25) (26) (27) (28) (29) (30)
+        (31) (32) (33) (34) (35) (36) (37) (38) (39) (40)
+        (41) (42) (43) (44) (45) (46) (47) (48) (49)
+    </string>
+
+    <string name="number_about">
+        \t\t\t\tFrom the above numbers, a player is expected to select a minimum of three or more before results are drawn. a player can select up to 20 numbers.
+    </string>
+    <string name="precautions">Precautions:</string>
+    <string name="next">NEXT</string>
+    <string name="game_hint">Please select the game you want to play</string>
+    <string name="print">Print</string>
+    <string name="button_scan">Scan for devices</string>
+    <string name="scanning">scanning for devices...</string>
+    <string name="select_device">select a device to connect</string>
+    <string name="none_paired">No devices have been paired</string>
+    <string name="none_found">No devices found</string>
+    <string name="pin_pass">PIN or PASSWORD</string>
+    <string name="bt_cancel">CANCEL</string>
+    <string name="bt_enter">ENTER</string>
+
+    <string name="company_name">SZFP TECHNOLOGY LIMITED</string>
+    <string name="company_slogan">EXPERT IN WIRELESS POS TERMINAL FIELD</string>
+    <string name="enter_pin"><![CDATA[Please input pin && password]]></string>
+    <string name="error_input">Enter the correct parameters</string>
+    <string name="please_game_type">Please Select Game Type</string>
+    <string name="please_select">PLEASE SELECT</string>
+    <string name="please_game_option">Please Select Game Option</string>
+    <string name="please_game_odd">Please Select Odd Type</string>
+
+    <string-array name="array_under">
+        <item>U3</item>
+        <item>U4</item>
+        <item>U5</item>
+        <item>U6</item>
+    </string-array>
+
+
+    <string-array name="array_game_type">
+        <item>NAP/PERM </item>
+        <item>GROUPING</item>
+    </string-array>
+    <string-array name="array_game_option">
+        <item>100-1</item>
+        <item>80-1</item>
+        <item>40-1</item>
+    </string-array>
+</resources>

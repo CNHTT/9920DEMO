@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.szfp.pos.LoginActivity">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#E7E7E7"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/text_dialog_input_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:text="@string/pin_pass"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_dialog_input_tips">
+
+            <EditText
+                android:id="@+id/edit_dialog_input"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/edittext_selector"
+                android:gravity="center"
+                android:inputType="textPassword"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="24sp"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/bt_cancel"
+            android:layout_width="wrap_content"
+            android:text="@string/bt_cancel"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/x100"/>
+        <Button
+            android:id="@+id/bt_enter"
+            android:layout_width="wrap_content"
+            android:text="@string/bt_enter"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

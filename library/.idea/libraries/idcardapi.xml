@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="idcardapi">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/idcardapi.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
