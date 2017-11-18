@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.szfp.pos.adapter.ListStringAdapter;
+import com.szfp.pos.model.Item;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,6 +55,8 @@ public class StepActivity extends AppCompatActivity implements AdapterView.OnIte
     private String gameOptionStr;
     private String gameOddStr;
 
+    private Item item = new Item();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +93,7 @@ public class StepActivity extends AppCompatActivity implements AdapterView.OnIte
             case R.id.lv_game_type: //select game type NAP/PERM OR GROUPING
                 gameTypeStr = gameTypeList.get(position);
                 tvTitle.setText(gameTypeStr+">");
-
+                item.setGameType(gameTypeStr);
                 type = 1;
                 showSelect();
                 break;
@@ -98,17 +101,24 @@ public class StepActivity extends AppCompatActivity implements AdapterView.OnIte
                 gameOptionStr = gameTypeOptionList.get(position);
                 tvOption.setText(gameOptionStr);
                 type = 2;
+                item.setGameOption(gameOptionStr);
                 showSelect();
                 break;
             case R.id.lv_game_odd_type://select odd type u3,u4,u5,u6
                 gameOddStr = gameOddTypeList.get(position);
                 tvOdd.setText("("+gameOddStr+")");
 
+                item.setOldType(gameOddStr);
+
 
 
 
                 //select games selection 8-9-16-23-25-27- etc
                 Intent intent = new Intent();
+
+                Bundle  bundle = new Bundle ();
+                bundle.putSerializable("item",item);
+                intent.putExtras(bundle);
                 intent.setClass(StepActivity.this,SelectActivity.class);
                 startActivity(intent);
                 break;

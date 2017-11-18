@@ -9,6 +9,6 @@
 
     <stroke
         android:width="2dip"
-        android:color="@color/yellow" />
+        android:color="@color/wheat" />
 
 </shape>

@@ -190,6 +190,8 @@ public class TimeUtils {
      */
     public static final SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     public static final SimpleDateFormat DEFAULT_YMD = new SimpleDateFormat("yyyy-MM-dd");
+    public static final SimpleDateFormat DEFAULT_DMY = new SimpleDateFormat("dd/MM/yyyy");
+    public static final SimpleDateFormat DEFAULT_HMS = new SimpleDateFormat("HH:mm:ss");
 
 
     public static long getCrateDayTime(){
@@ -347,6 +349,19 @@ public class TimeUtils {
      */
     public static String date2String(Date time) {
         return date2String(time, DEFAULT_SDF);
+    }
+    /**
+     * 将Date类型转为时间字符串
+     * <p>格式为yyyy-MM-dd HH:mm:ss</p>
+     *
+     * @param time Date类型时间
+     * @return 时间字符串
+     */
+    public static String date3String(Date time) {
+        return date2String(time, DEFAULT_DMY);
+    }
+    public static String date4String(Date time) {
+        return date2String(time, DEFAULT_HMS);
     }
 
     /**

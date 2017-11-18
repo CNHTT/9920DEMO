@@ -7,6 +7,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.szfp.utils.SPUtils;
+import com.szfp.utils.StatusBarUtil;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -27,10 +30,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        StatusBarUtil.setTranslucent(this);
     }
 
     @OnClick(R.id.ll_home)
     public void onClick() {
+        if (SPUtils.getBoolean(this,App.isLogin))
+        startActivity(new Intent(this,OperateActivity.class));
+        else
         startActivity(new Intent(this,LoginActivity.class));
     }
 }

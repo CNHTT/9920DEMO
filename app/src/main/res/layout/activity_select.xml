@@ -5,46 +5,64 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/all_bg_color"
     tools:context="com.szfp.pos.SelectActivity">
 
-    <com.szfp.view.flow.FlowTagLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/fl_number"
-        android:layout_weight="1" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/dark_gray"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:padding="10dp"
-            android:hint="@string/game_hint"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_font_14"
+        android:background="@color/white">
+        <com.szfp.view.flow.FlowTagLayout
+            android:id="@+id/fl_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_result"/>
+            android:layout_weight="1" />
 
-        <View
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/c"/>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/bt_next"
-                android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_result"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_font_24"
-                android:text="@string/next"
-                android:textColor="@color/wheat"
-                android:background="@drawable/btn_bottom_confirm_bg"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true" />
-        </RelativeLayout>
+                android:hint="@string/game_hint"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_font_14" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/c" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/bt_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/btn_bottom_confirm_bg"
+                    android:text="@string/next"
+                    android:textColor="@color/wheat"
+                    android:textSize="@dimen/text_font_24" />
+            </RelativeLayout>
+
+        </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>

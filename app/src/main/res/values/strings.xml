@@ -30,7 +30,8 @@
     <string name="select_device">select a device to connect</string>
     <string name="none_paired">No devices have been paired</string>
     <string name="none_found">No devices found</string>
-    <string name="pin_pass">PIN or PASSWORD</string>
+    <string name="pin_pass">PIN  </string>
+    <string name="pin_tid" >TID  </string>
     <string name="bt_cancel">CANCEL</string>
     <string name="bt_enter">ENTER</string>
 

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +15,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.szfp.pos.adapter.ListStringAdapter;
+import com.szfp.pos.model.Item;
 import com.szfp.pos.utils.AidlUtil;
+import com.szfp.utils.StatusBarUtil;
 import com.szfp.utils.ToastUtils;
 import com.szfp.view.dialog.BaseDialog;
 import com.szfp.view.dialog.DialogEditSureCancel;
@@ -31,6 +34,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.szfp.utils.DataUtils.isNullString;
+
 public class SelectActivity extends BaseActivity {
 
 
@@ -40,17 +45,24 @@ public class SelectActivity extends BaseActivity {
     TextView tvResult;
     @BindView(R.id.bt_next)
     Button btNext;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     private String numbersStr;
     private List<String> numbers;
-    private List<Integer> list=new ArrayList<>();
+    private List<Integer> list = new ArrayList<>();
     private FlowAdapter flowAdapter;
     private StringBuffer str;
+
+    private float amount;
+    private String amountStr;
 
     private BaseDialog dialog;
     private ListView listView;
     private ListStringAdapter adapter;
     private List<String> listString;
     private DialogEditSureCancel editDialog;
+
+    private Item item;
 
     @Override
     protected void showDisconnecting() {
@@ -62,8 +74,14 @@ public class SelectActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
         ButterKnife.bind(this);
+        StatusBarUtil.setTransparent(this);
 
 
+        item = (Item) getIntent().getSerializableExtra("item");
+        toolbar.setTitle(item.getGameType()+">"+item.getGameOption()+">"+item.getOldType());
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         numbersStr = getResources().getString(R.string.game_str).replace("(", "").replace(")", "");
         numbers = Arrays.asList(numbersStr.split(" "));
         flowAdapter = new FlowAdapter(this);
@@ -74,15 +92,15 @@ public class SelectActivity extends BaseActivity {
             @Override
             public void onItemSelect(FlowTagLayout parent, List<Integer> selectedList) {
                 str = new StringBuffer();
-                list =selectedList;
+                list = selectedList;
                 Log.d("SELECT", selectedList.toString());
-                for (int i = 0; i <list.size() ; i++) {
-                    if (i==0){
+                for (int i = 0; i < list.size(); i++) {
+                    if (i == 0) {
                         str.append(list.get(0));
-                    }else if (i==list.size()-1){
-                        if (list.size()!=1)
-                        str.append("-"+list.get(list.size()-1));
-                    }else str.append("-"+list.get(i)+"-");
+                    } else if (i == list.size() - 1) {
+                        if (list.size() != 1)
+                            str.append("-" + list.get(list.size() - 1));
+                    } else str.append("-" + list.get(i) + "-");
 
                 }
 
@@ -99,7 +117,7 @@ public class SelectActivity extends BaseActivity {
 
     @OnClick(R.id.bt_next)
     public void onClick() {
-        if (list.size()>2){
+        if (list.size() > 2) {
 //            if (dialog == null)
 //            {
 //                View view = ContextUtils.inflate(this,R.layout.dialog_select_option);
@@ -128,13 +146,13 @@ public class SelectActivity extends BaseActivity {
             showSelectAmount();
 
 
-        }else ToastUtils.showToast("The minimum number of selection is 3");
+        } else ToastUtils.showToast("The minimum number of selection is 3");
 
     }
 
     private void showSelectAmount() {
 
-        if (editDialog ==null)editDialog = new DialogEditSureCancel(mContext);
+        if (editDialog == null) editDialog = new DialogEditSureCancel(mContext);
         editDialog.getTvTitle().setText("Please Input Amount");
         editDialog.getTvSure().setOnClickListener(OnClickListener);
         editDialog.getTvCancel().setOnClickListener(OnClickListener);
@@ -147,9 +165,24 @@ public class SelectActivity extends BaseActivity {
         public void onClick(View v) {
 
 
-            switch (v.getId()){
-                case R. id .tv_sure:
+            switch (v.getId()) {
+                case R.id.tv_sure:
+                    amountStr = editDialog.getEditText().toString();
+                    if (isNullString(amountStr))
+                    {
+                        ToastUtils.showToast("Please input amount");
+                        return;
+                    }
+
+                    amount = Float.parseFloat(amountStr);
+
+                    item.setAmount(amount);
+                    item.setList(list);
+
+
                     if (editDialog != null) editDialog.cancel();
+
+
                     showNext();
 
                     break;
@@ -164,8 +197,9 @@ public class SelectActivity extends BaseActivity {
      *
      */
     private DialogSureCancel printDialog;
+
     private void showNext() {
-        if (printDialog==null){
+        if (printDialog == null) {
             printDialog = new DialogSureCancel(this);
             printDialog.getTvContent().setText("Next it ask if there are other games.");
             printDialog.setCancelable(false);
@@ -187,21 +221,22 @@ public class SelectActivity extends BaseActivity {
     }
 
     private Bitmap bitmap;
+
     /**
      * 打印
      */
     private void print() {
         bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_costomer_logo);
 
-        String   model = Build.MODEL;
-        Log.d("Model",model);
-        if (model.equals("V1-B18")){
-            AidlUtil.getInstance().printText("POS SOFTWARE\n",0,36,true,false);
-            AidlUtil.getInstance().printText("**************************\n",0,28,false,false);
-            AidlUtil.getInstance().printText(App.companyName,1,36,true,false);
-            AidlUtil.getInstance().printText("[COD]\n",1,36,true,false);
-            AidlUtil.getInstance().printBitmap(scaleBitmap(bitmap,0.3F));
-            AidlUtil.getInstance().printText("\n"+App.slogan+"\n",1,20,false,true);
+        String model = Build.MODEL;
+        Log.d("Model", model);
+        if (model.equals("V1-B18")) {
+            AidlUtil.getInstance().printText("POS SOFTWARE\n", 0, 36, true, false);
+            AidlUtil.getInstance().printText("**************************\n", 0, 28, false, false);
+            AidlUtil.getInstance().printText(App.companyName, 1, 36, true, false);
+            AidlUtil.getInstance().printText("[COD]\n", 1, 36, true, false);
+            AidlUtil.getInstance().printBitmap(scaleBitmap(bitmap, 0.3F));
+            AidlUtil.getInstance().printText("\n" + App.slogan + "\n", 1, 20, false, true);
         }
 
     }
@@ -235,7 +270,7 @@ public class SelectActivity extends BaseActivity {
         int width = bitmap1.getWidth();
         int height = bitmap1.getHeight();
         // 设置想要的大小
-        int newWidth = (width/8+1)*8;
+        int newWidth = (width / 8 + 1) * 8;
         // 计算缩放比例
         float scaleWidth = ((float) newWidth) / width;
         // 取得想要缩放的matrix参数
@@ -250,16 +285,20 @@ public class SelectActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_print:
                 showDeviceList();
                 break;
+            case  android.R.id.home:
+                onBackPressed();
+                // 处理返回逻辑
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
