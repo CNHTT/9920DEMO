@@ -192,6 +192,7 @@ public class TimeUtils {
     public static final SimpleDateFormat DEFAULT_YMD = new SimpleDateFormat("yyyy-MM-dd");
     public static final SimpleDateFormat DEFAULT_DMY = new SimpleDateFormat("dd/MM/yyyy");
     public static final SimpleDateFormat DEFAULT_HMS = new SimpleDateFormat("HH:mm:ss");
+    public static final SimpleDateFormat DEFAULT_DMYHMS = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
 
     public static long getCrateDayTime(){
@@ -362,6 +363,9 @@ public class TimeUtils {
     }
     public static String date4String(Date time) {
         return date2String(time, DEFAULT_HMS);
+    }
+  public static String date5String(Date time) {
+        return date2String(time, DEFAULT_DMYHMS);
     }
 
     /**
@@ -870,4 +874,45 @@ public class TimeUtils {
         year += String.format("%05d",i);
         return year;
     }
+
+    /**
+     * The last day of the week
+     * @return
+     */
+    public static Date getLastDayWeek(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        int d = 0;
+        if (cal.get(Calendar.DAY_OF_WEEK) == 1) {
+            d = -6;
+        } else {
+            d = 2 - cal.get(Calendar.DAY_OF_WEEK);
+        }
+        cal.add(Calendar.DAY_OF_WEEK, d);
+        // 所在周开始日期
+//        cal.getTime();
+        cal.add(Calendar.DAY_OF_WEEK, 5);
+        // 所在周结束日期
+
+        return  cal.getTime();
+    }    /**
+     * The last day of the week
+     * @return
+     */
+    public static Date getLastDayMonth(){
+        Calendar instance = Calendar.getInstance();
+        System.out.println(instance.getTime());
+        instance.add(Calendar.MONTH, 1);//月份+1
+        instance.set(Calendar.DAY_OF_MONTH, 1);//天设为一个月的第一天
+        System.out.println(instance.getTime());
+        instance.add(Calendar.DAY_OF_MONTH, -1);//本月最后一天
+        System.out.println(instance.getTime());
+        System.out.println(instance.get(Calendar.DAY_OF_WEEK));
+
+        instance.add(Calendar.DAY_OF_MONTH,
+                1 - instance.get(Calendar.DAY_OF_WEEK)-1);//根据月末最后一天是星期几，向前偏移至最近的周日
+        System.out.println(instance.getTime());
+        return  instance.getTime();
+    }
+
 }

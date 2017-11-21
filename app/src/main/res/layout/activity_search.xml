@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/all_bg_color"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/transaction_details_root"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/home2_details_bg_en"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/history_search_layout"
+            android:layout_marginTop="180dp"
+            android:orientation="horizontal"
+            android:layout_height="50dp">
+            <EditText
+                android:paddingLeft="@dimen/text_font_20"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:textColorHint="#aaa"
+                android:layout_marginLeft="20dp"
+                android:textColor="#aaa"
+                android:maxLength="20"
+                android:hint="@string/please_input_traceno_hint"
+                android:id="@+id/history_search_edit"
+                android:inputType="number"
+                android:background="@drawable/edit_white_shape"
+                android:layout_height="match_parent" />
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/history_search"
+                    android:layout_width="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icon_search"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/scan"
+            android:src="@drawable/home2_scan_sale"
+            android:layout_marginTop="@dimen/text_font_20"
+            android:layout_gravity="center"
+            android:layout_width="200dp"
+            android:layout_height="200dp" />
+        <ListView
+            android:id="@+id/history_lv"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="10dp"
+            android:scrollbars="none"
+            style="@style/Listview_Nodiv"/>
+        <include
+            android:id="@+id/history_nodata"
+            layout="@layout/activity_history_nodata" />
+    </LinearLayout>
+</LinearLayout>

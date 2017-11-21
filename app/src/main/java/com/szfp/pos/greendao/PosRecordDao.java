@@ -26,7 +26,7 @@ public class PosRecordDao extends AbstractDao<PosRecord, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Tsn = new Property(1, String.class, "tsn", false, "TSN");
-        public final static Property TotalStake = new Property(2, Float.class, "totalStake", false, "TOTAL_STAKE");
+        public final static Property TotalStake = new Property(2, int.class, "totalStake", false, "TOTAL_STAKE");
         public final static Property CreateTime = new Property(3, java.util.Date.class, "createTime", false, "CREATE_TIME");
         public final static Property TID = new Property(4, String.class, "tID", false, "T_ID");
         public final static Property MatchPlayed = new Property(5, java.util.Date.class, "matchPlayed", false, "MATCH_PLAYED");
@@ -48,9 +48,9 @@ public class PosRecordDao extends AbstractDao<PosRecord, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"POS_RECORD\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"TSN\" TEXT," + // 1: tsn
-                "\"TOTAL_STAKE\" REAL," + // 2: totalStake
+                "\"TOTAL_STAKE\" INTEGER NOT NULL ," + // 2: totalStake
                 "\"CREATE_TIME\" INTEGER," + // 3: createTime
                 "\"T_ID\" TEXT," + // 4: tID
                 "\"MATCH_PLAYED\" INTEGER," + // 5: matchPlayed
@@ -78,11 +78,7 @@ public class PosRecordDao extends AbstractDao<PosRecord, Long> {
         if (tsn != null) {
             stmt.bindString(2, tsn);
         }
- 
-        Float totalStake = entity.getTotalStake();
-        if (totalStake != null) {
-            stmt.bindDouble(3, totalStake);
-        }
+        stmt.bindLong(3, entity.getTotalStake());
  
         java.util.Date createTime = entity.getCreateTime();
         if (createTime != null) {
@@ -128,11 +124,7 @@ public class PosRecordDao extends AbstractDao<PosRecord, Long> {
         if (tsn != null) {
             stmt.bindString(2, tsn);
         }
- 
-        Float totalStake = entity.getTotalStake();
-        if (totalStake != null) {
-            stmt.bindDouble(3, totalStake);
-        }
+        stmt.bindLong(3, entity.getTotalStake());
  
         java.util.Date createTime = entity.getCreateTime();
         if (createTime != null) {
@@ -175,7 +167,7 @@ public class PosRecordDao extends AbstractDao<PosRecord, Long> {
         PosRecord entity = new PosRecord( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // tsn
-            cursor.isNull(offset + 2) ? null : cursor.getFloat(offset + 2), // totalStake
+            cursor.getInt(offset + 2), // totalStake
             cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // createTime
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // tID
             cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)), // matchPlayed
@@ -190,7 +182,7 @@ public class PosRecordDao extends AbstractDao<PosRecord, Long> {
     public void readEntity(Cursor cursor, PosRecord entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setTsn(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setTotalStake(cursor.isNull(offset + 2) ? null : cursor.getFloat(offset + 2));
+        entity.setTotalStake(cursor.getInt(offset + 2));
         entity.setCreateTime(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
         entity.setTID(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setMatchPlayed(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));

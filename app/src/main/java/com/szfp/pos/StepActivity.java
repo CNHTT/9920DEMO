@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.szfp.pos.adapter.ListStringAdapter;
 import com.szfp.pos.model.Item;
+import com.szfp.utils.StatusBarUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StepActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class StepActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
     @BindView(R.id.tv_title)
     TextView tvTitle;
@@ -59,11 +60,27 @@ public class StepActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
     @Override
+    protected void showDisconnecting() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step);
         ButterKnife.bind(this);
+        StatusBarUtil.setTranslucent(this);
         initData();
+
+    }
+
+    @Override
+    protected void showConnecting() {
+
+    }
+
+    @Override
+    protected void showConnectedDeviceName(String mConnectedDeviceName) {
 
     }
 

@@ -4,94 +4,114 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/all_bg_color"
+
     android:orientation="vertical"
     tools:context="com.szfp.pos.LoginActivity">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/lightyellow"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/all_bg_color"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:paddingRight="20dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:text="@string/pin_tid"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/edit_dialog_input"
-                android:layout_width="220dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerInParent="true"
-                android:background="@drawable/edittext_selector"
-                android:gravity="center"
-                android:inputType="text"
-                android:padding="5dp"
-                android:textColor="@color/black"
-                android:textSize="24sp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:paddingRight="20dp"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:text="@string/pin_pass"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/et_pin"
-                android:layout_width="220dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerInParent="true"
-                android:background="@drawable/edittext_selector"
-                android:gravity="center"
-                android:inputType="textPassword"
-                android:padding="5dp"
-                android:textColor="@color/black"
-                android:textSize="24sp"/>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_height="wrap_content">
-        <Button
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:id="@+id/bt_cancel"
-            android:layout_width="wrap_content"
-            android:text="@string/bt_cancel"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/x100"/>
-        <Button
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:id="@+id/bt_enter"
-            android:layout_width="wrap_content"
-            android:text="@string/bt_enter"
-            android:layout_height="wrap_content" />
+            android:background="@color/lightyellow"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:paddingRight="20dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:text="@string/pin_tid"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edit_dialog_input"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/edittext_selector"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:paddingRight="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:text="@string/pin_pass"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_pin"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/edittext_selector"
+                    android:gravity="center"
+                    android:inputType="textPassword"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+            <Button
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:id="@+id/bt_cancel"
+                android:layout_width="wrap_content"
+                android:text="@string/bt_cancel"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/x100"/>
+            <Button
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:id="@+id/bt_enter"
+                android:layout_width="wrap_content"
+                android:text="@string/bt_enter"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

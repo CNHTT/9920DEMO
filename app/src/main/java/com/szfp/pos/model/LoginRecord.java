@@ -24,13 +24,13 @@ public class LoginRecord  implements Serializable {
     private int soldQty;
     private int paymentQty;
 
-    private Float soldAmount;
-    private Float paymentAmount;
-    private Float netAmount;
-    @Generated(hash = 1091554816)
+    private int soldAmount;
+    private int paymentAmount;
+    private int netAmount;
+    @Generated(hash = 276781863)
     public LoginRecord(Long id, Date loginDate, Date logoutDate, String terminalId,
-            int soldQty, int paymentQty, Float soldAmount, Float paymentAmount,
-            Float netAmount) {
+            int soldQty, int paymentQty, int soldAmount, int paymentAmount,
+            int netAmount) {
         this.id = id;
         this.loginDate = loginDate;
         this.logoutDate = logoutDate;
@@ -80,25 +80,25 @@ public class LoginRecord  implements Serializable {
     public void setPaymentQty(int paymentQty) {
         this.paymentQty = paymentQty;
     }
-    public Float getSoldAmount() {
+    public int getSoldAmount() {
         return this.soldAmount;
     }
-    public void setSoldAmount(Float soldAmount) {
+    public void setSoldAmount(int soldAmount) {
         this.soldAmount = soldAmount;
     }
-    public Float getPaymentAmount() {
+    public int getPaymentAmount() {
         return this.paymentAmount;
     }
-    public void setPaymentAmount(Float paymentAmount) {
+    public void setPaymentAmount(int paymentAmount) {
         this.paymentAmount = paymentAmount;
     }
-    public Float getNetAmount() {
+    public int getNetAmount() {
         return this.netAmount;
     }
-    public void setNetAmount(Float netAmount) {
+    public void setNetAmount(int netAmount) {
         this.netAmount = netAmount;
     }
-
+   
 
 
 }

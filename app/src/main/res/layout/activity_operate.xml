@@ -39,12 +39,24 @@
             android:textColor="@color/black"
             android:background="@drawable/main_bottom"/>
         <TextView
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_font_20"
+            android:text="2.SEARCH RECORD ON TSN"
+            android:paddingTop="10dp"
+            android:layout_marginTop="2dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:textColor="@color/black"
+            android:background="@drawable/main_bottom"/>
+        <TextView
             android:id="@+id/logout"
             android:layout_marginTop="2dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_font_20"
-            android:text="2.LOGIN OUT"
+            android:text="3.LOGIN OUT"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingLeft="20dp"

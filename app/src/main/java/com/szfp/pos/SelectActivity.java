@@ -1,5 +1,6 @@
 package com.szfp.pos;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -14,10 +15,16 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.szfp.pos.adapter.ListStringAdapter;
 import com.szfp.pos.model.Item;
+import com.szfp.pos.model.PosRecord;
+import com.szfp.pos.print.PrintFont;
 import com.szfp.pos.utils.AidlUtil;
+import com.szfp.pos.utils.JsonUtil;
+import com.szfp.utils.SPUtils;
 import com.szfp.utils.StatusBarUtil;
+import com.szfp.utils.TimeUtils;
 import com.szfp.utils.ToastUtils;
 import com.szfp.view.dialog.BaseDialog;
 import com.szfp.view.dialog.DialogEditSureCancel;
@@ -26,8 +33,10 @@ import com.szfp.view.flow.FlowAdapter;
 import com.szfp.view.flow.FlowTagLayout;
 import com.szfp.view.flow.OnTagSelectListener;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -49,11 +58,12 @@ public class SelectActivity extends BaseActivity {
     Toolbar toolbar;
     private String numbersStr;
     private List<String> numbers;
+    private List<String> rsults;
     private List<Integer> list = new ArrayList<>();
     private FlowAdapter flowAdapter;
     private StringBuffer str;
 
-    private float amount;
+    private int amount;
     private String amountStr;
 
     private BaseDialog dialog;
@@ -63,6 +73,10 @@ public class SelectActivity extends BaseActivity {
     private DialogEditSureCancel editDialog;
 
     private Item item;
+    private PosRecord posRecord;
+    private String posRecordStr;
+    private String itemListStr;
+    private List<Item> items;
 
     @Override
     protected void showDisconnecting() {
@@ -75,6 +89,30 @@ public class SelectActivity extends BaseActivity {
         setContentView(R.layout.activity_select);
         ButterKnife.bind(this);
         StatusBarUtil.setTransparent(this);
+
+        posRecordStr = SPUtils.getContent(this, PrintFont.POSRECORDSTR);
+
+
+        if (isNullString(posRecordStr)){
+            posRecord = new PosRecord();
+            posRecord.setTsn(TimeUtils.generateSequenceNo());
+            posRecord.setCreateTime(new Date());
+            posRecord.setMatchPlayed(TimeUtils.getCurTimeDate());
+            posRecord.setMatchPlayed(TimeUtils.getLastDayWeek());
+            posRecord.setValidity(TimeUtils.getLastDayMonth());
+            posRecord.setTID(App.TID);
+
+
+            items = new ArrayList<>();
+        }else {
+            posRecord = (PosRecord) JsonUtil.stringToObject(posRecordStr,PosRecord.class);
+            if (isNullString(posRecord.getList())){
+                items = new ArrayList<>();
+            }else {
+                items  = JsonUtil .stringToList(posRecord.getList(),Item.class);
+            }
+        }
+
 
 
         item = (Item) getIntent().getSerializableExtra("item");
@@ -93,6 +131,10 @@ public class SelectActivity extends BaseActivity {
             public void onItemSelect(FlowTagLayout parent, List<Integer> selectedList) {
                 str = new StringBuffer();
                 list = selectedList;
+                for (int i = 0; i <list.size() ; i++) {
+                    list.set(i,list.get(i)+1);
+
+                }
                 Log.d("SELECT", selectedList.toString());
                 for (int i = 0; i < list.size(); i++) {
                     if (i == 0) {
@@ -103,6 +145,7 @@ public class SelectActivity extends BaseActivity {
                     } else str.append("-" + list.get(i) + "-");
 
                 }
+
 
                 tvResult.setText(str.toString());
 
@@ -118,34 +161,7 @@ public class SelectActivity extends BaseActivity {
     @OnClick(R.id.bt_next)
     public void onClick() {
         if (list.size() > 2) {
-//            if (dialog == null)
-//            {
-//                View view = ContextUtils.inflate(this,R.layout.dialog_select_option);
-//                listView = (ListView) view.findViewById(R.id.ll_option_list);
-//                listString = new ArrayList<>();
-//                listString.add("80 TO 1 OPTIONS");
-//                listString.add("100 TO 1 OPTIONS");
-//                adapter = new ListStringAdapter(this,listString);
-//                listView.setAdapter(adapter);
-//                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                        dialog.cancel();
-//                        BluetoothService.BT_Write("Szfffff");
-//                    }
-//                });
-//
-//                dialog = new BaseDialog(this,R.style.CustomDialog);
-//                dialog.setContentView(view);
-//                dialog.setCancelable(false);
-//
-//            }
-//            dialog.show();
-
-
             showSelectAmount();
-
-
         } else ToastUtils.showToast("The minimum number of selection is 3");
 
     }
@@ -167,22 +183,24 @@ public class SelectActivity extends BaseActivity {
 
             switch (v.getId()) {
                 case R.id.tv_sure:
-                    amountStr = editDialog.getEditText().toString();
+                    amountStr = editDialog.getEditText().getText().toString();
                     if (isNullString(amountStr))
                     {
                         ToastUtils.showToast("Please input amount");
                         return;
                     }
 
-                    amount = Float.parseFloat(amountStr);
+                    amount = Integer.parseInt(amountStr);
 
                     item.setAmount(amount);
                     item.setList(list);
 
+                    items.add(item);
+                    posRecord.setList(JsonUtil.objectToString(items));
+                    posRecord.setTotalStake(posRecord.getTotalStake()+amount);
+                    SPUtils.putString(SelectActivity.this,PrintFont.POSRECORDSTR,JsonUtil.objectToString(posRecord));
 
                     if (editDialog != null) editDialog.cancel();
-
-
                     showNext();
 
                     break;
@@ -206,7 +224,8 @@ public class SelectActivity extends BaseActivity {
             printDialog.getTvSure().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    print();
+                    finish();
+                    startActivity( new Intent(SelectActivity.this,StepActivity.class));
                     printDialog.cancel();
                 }
             });
@@ -214,8 +233,14 @@ public class SelectActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     printDialog.cancel();
-                }
-            });
+                    finish();
+                    Intent intent = new Intent(SelectActivity.this,ResultActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("POS",posRecord);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+        }
+    });
         }
         printDialog.show();
     }
@@ -289,19 +314,6 @@ public class SelectActivity extends BaseActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_print:
-                showDeviceList();
-                break;
-            case  android.R.id.home:
-                onBackPressed();
-                // 处理返回逻辑
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void showConnecting() {

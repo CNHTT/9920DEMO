@@ -36,6 +36,8 @@ public class OperateActivity extends AppCompatActivity {
     TextView playGame;
     @BindView(R.id.logout)
     TextView logout;
+    @BindView(R.id.search)
+    TextView search;
 
     private LoginRecord loginRecord;
 
@@ -53,7 +55,7 @@ public class OperateActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
-    @OnClick({R.id.play_game, R.id.logout})
+    @OnClick({R.id.play_game, R.id.logout, R.id.search})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.play_game:
@@ -63,6 +65,9 @@ public class OperateActivity extends AppCompatActivity {
                 logout();
 
                 break;
+            case R.id.search:
+                startActivity(new Intent(this,SearchActivity.class));
+                break;
         }
     }
 
@@ -70,10 +75,10 @@ public class OperateActivity extends AppCompatActivity {
         loginRecord = (LoginRecord) JsonUtil.stringToObject(SPUtils.getString(this,App.LOGRECORD),LoginRecord.class);
         loginRecord.setLogoutDate(new Date());
         loginRecord.setSoldQty(SPUtils.getInt(this, PrintFont.soldQty));
-        loginRecord.setSoldAmount(SPUtils.getFloat(this, PrintFont.soldAmount));
+        loginRecord.setSoldAmount(SPUtils.getInt(this, PrintFont.soldAmount));
         loginRecord.setPaymentQty(SPUtils.getInt(this, PrintFont.paymentQty));
-        loginRecord.setPaymentAmount(SPUtils.getFloat(this, PrintFont.paymentAmount));
-        loginRecord.setNetAmount(SPUtils.getFloat(this, PrintFont.netAmount));
+        loginRecord.setPaymentAmount(SPUtils.getInt(this, PrintFont.paymentAmount));
+        loginRecord.setNetAmount(SPUtils.getInt(this, PrintFont.netAmount));
 
         flowable = Flowable.create(new FlowableOnSubscribe<Integer>() {
             @Override
@@ -96,7 +101,10 @@ public class OperateActivity extends AppCompatActivity {
             @Override
             public void onNext(Integer s) {
                 if (PrintManager.getmInstance(OperateActivity.this
-                ).ptintLoginRecord(loginRecord)==0) ToastUtils.success("success");
+                ).printLoginRecord(loginRecord)==0) ToastUtils.success("success");
+
+
+
             }
 
             @Override
@@ -110,9 +118,11 @@ public class OperateActivity extends AppCompatActivity {
         };
 
 
-//        flowable.subscribe(subscriber);
+        flowable.subscribe(subscriber);
 
-        SPUtils.putString(this,App.isLogin,"");
+        SPUtils.putInt(this,PrintFont.soldQty,0);
+        SPUtils.putInt(this,PrintFont.soldAmount,0);
+        SPUtils.putBoolean(this,App.isLogin,false);
         finish();
         startActivity(new Intent(this,MainActivity.class));
     }

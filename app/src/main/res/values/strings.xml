@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BETTING</string>
+    <string name="app_name">Lottery</string>
 
     <string name="numbers">
         \t\t\t\t
@@ -31,7 +31,7 @@
     <string name="none_paired">No devices have been paired</string>
     <string name="none_found">No devices found</string>
     <string name="pin_pass">PIN  </string>
-    <string name="pin_tid" >TID  </string>
+    <string name="pin_tid">TID  </string>
     <string name="bt_cancel">CANCEL</string>
     <string name="bt_enter">ENTER</string>
 
@@ -43,6 +43,8 @@
     <string name="please_select">PLEASE SELECT</string>
     <string name="please_game_option">Please Select Game Option</string>
     <string name="please_game_odd">Please Select Odd Type</string>
+    <string name="please_input_traceno_hint">Please enter TSN</string>
+    <string name="not_any_record">No any record</string>
 
     <string-array name="array_under">
         <item>U3</item>
@@ -61,4 +63,14 @@
         <item>80-1</item>
         <item>40-1</item>
     </string-array>
+
+    <string name="scan_barcode_title">ZebraScan</string>
+    <string name="scan_qrcode_title">qr code Scan</string>
+    <string name="scan_allcode_title">Qr code or barcode scanning</string>
+    <string name="scan_barcode_hint">The bar code is automatically scanned into the frame</string>
+    <string name="scan_qrcode_hint">The bar code is automatically scanned into the frame</string>
+    <string name="scan_allcode_hint">The bar code is automatically scanned into the frame</string>
+
+
+    <string name="title_activity_jump_to">JumpToActivity</string>
 </resources>

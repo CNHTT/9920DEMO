@@ -7,12 +7,12 @@ import java.util.List;
  * Created by 戴尔 on 2017/11/18.
  */
 
-public class Item implements Serializable{
+public class Item implements Serializable {
     private String gameType;
     private String gameOption;
     private String OldType;
     private List<Integer> list;
-    private Float amount;
+    private int amount;
     private String title;
 
     public String getTitle() {
@@ -55,11 +55,11 @@ public class Item implements Serializable{
         this.list = list;
     }
 
-    public Float getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(Float amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 }

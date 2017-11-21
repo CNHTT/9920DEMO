@@ -30,9 +30,9 @@ public class LoginRecordDao extends AbstractDao<LoginRecord, Long> {
         public final static Property TerminalId = new Property(3, String.class, "terminalId", false, "TERMINAL_ID");
         public final static Property SoldQty = new Property(4, int.class, "soldQty", false, "SOLD_QTY");
         public final static Property PaymentQty = new Property(5, int.class, "paymentQty", false, "PAYMENT_QTY");
-        public final static Property SoldAmount = new Property(6, Float.class, "soldAmount", false, "SOLD_AMOUNT");
-        public final static Property PaymentAmount = new Property(7, Float.class, "paymentAmount", false, "PAYMENT_AMOUNT");
-        public final static Property NetAmount = new Property(8, Float.class, "netAmount", false, "NET_AMOUNT");
+        public final static Property SoldAmount = new Property(6, int.class, "soldAmount", false, "SOLD_AMOUNT");
+        public final static Property PaymentAmount = new Property(7, int.class, "paymentAmount", false, "PAYMENT_AMOUNT");
+        public final static Property NetAmount = new Property(8, int.class, "netAmount", false, "NET_AMOUNT");
     }
 
 
@@ -54,9 +54,9 @@ public class LoginRecordDao extends AbstractDao<LoginRecord, Long> {
                 "\"TERMINAL_ID\" TEXT," + // 3: terminalId
                 "\"SOLD_QTY\" INTEGER NOT NULL ," + // 4: soldQty
                 "\"PAYMENT_QTY\" INTEGER NOT NULL ," + // 5: paymentQty
-                "\"SOLD_AMOUNT\" REAL," + // 6: soldAmount
-                "\"PAYMENT_AMOUNT\" REAL," + // 7: paymentAmount
-                "\"NET_AMOUNT\" REAL);"); // 8: netAmount
+                "\"SOLD_AMOUNT\" INTEGER NOT NULL ," + // 6: soldAmount
+                "\"PAYMENT_AMOUNT\" INTEGER NOT NULL ," + // 7: paymentAmount
+                "\"NET_AMOUNT\" INTEGER NOT NULL );"); // 8: netAmount
     }
 
     /** Drops the underlying database table. */
@@ -90,21 +90,9 @@ public class LoginRecordDao extends AbstractDao<LoginRecord, Long> {
         }
         stmt.bindLong(5, entity.getSoldQty());
         stmt.bindLong(6, entity.getPaymentQty());
- 
-        Float soldAmount = entity.getSoldAmount();
-        if (soldAmount != null) {
-            stmt.bindDouble(7, soldAmount);
-        }
- 
-        Float paymentAmount = entity.getPaymentAmount();
-        if (paymentAmount != null) {
-            stmt.bindDouble(8, paymentAmount);
-        }
- 
-        Float netAmount = entity.getNetAmount();
-        if (netAmount != null) {
-            stmt.bindDouble(9, netAmount);
-        }
+        stmt.bindLong(7, entity.getSoldAmount());
+        stmt.bindLong(8, entity.getPaymentAmount());
+        stmt.bindLong(9, entity.getNetAmount());
     }
 
     @Override
@@ -132,21 +120,9 @@ public class LoginRecordDao extends AbstractDao<LoginRecord, Long> {
         }
         stmt.bindLong(5, entity.getSoldQty());
         stmt.bindLong(6, entity.getPaymentQty());
- 
-        Float soldAmount = entity.getSoldAmount();
-        if (soldAmount != null) {
-            stmt.bindDouble(7, soldAmount);
-        }
- 
-        Float paymentAmount = entity.getPaymentAmount();
-        if (paymentAmount != null) {
-            stmt.bindDouble(8, paymentAmount);
-        }
- 
-        Float netAmount = entity.getNetAmount();
-        if (netAmount != null) {
-            stmt.bindDouble(9, netAmount);
-        }
+        stmt.bindLong(7, entity.getSoldAmount());
+        stmt.bindLong(8, entity.getPaymentAmount());
+        stmt.bindLong(9, entity.getNetAmount());
     }
 
     @Override
@@ -163,9 +139,9 @@ public class LoginRecordDao extends AbstractDao<LoginRecord, Long> {
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // terminalId
             cursor.getInt(offset + 4), // soldQty
             cursor.getInt(offset + 5), // paymentQty
-            cursor.isNull(offset + 6) ? null : cursor.getFloat(offset + 6), // soldAmount
-            cursor.isNull(offset + 7) ? null : cursor.getFloat(offset + 7), // paymentAmount
-            cursor.isNull(offset + 8) ? null : cursor.getFloat(offset + 8) // netAmount
+            cursor.getInt(offset + 6), // soldAmount
+            cursor.getInt(offset + 7), // paymentAmount
+            cursor.getInt(offset + 8) // netAmount
         );
         return entity;
     }
@@ -178,9 +154,9 @@ public class LoginRecordDao extends AbstractDao<LoginRecord, Long> {
         entity.setTerminalId(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setSoldQty(cursor.getInt(offset + 4));
         entity.setPaymentQty(cursor.getInt(offset + 5));
-        entity.setSoldAmount(cursor.isNull(offset + 6) ? null : cursor.getFloat(offset + 6));
-        entity.setPaymentAmount(cursor.isNull(offset + 7) ? null : cursor.getFloat(offset + 7));
-        entity.setNetAmount(cursor.isNull(offset + 8) ? null : cursor.getFloat(offset + 8));
+        entity.setSoldAmount(cursor.getInt(offset + 6));
+        entity.setPaymentAmount(cursor.getInt(offset + 7));
+        entity.setNetAmount(cursor.getInt(offset + 8));
      }
     
     @Override

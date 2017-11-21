@@ -6,4 +6,7 @@
     <color name="all_bg_color">#26292E</color>
     <color name="transparent_half">#88000000</color>
     <color name="color_line">#90303338</color>
+
+    <color name="line_color">#cccccc</color>
+    <color name="edittext_line_color">#000000</color>
 </resources>

@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.ll_home)
     LinearLayout llHome;
 
+    private boolean isLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.ll_home)
     public void onClick() {
-        if (SPUtils.getBoolean(this,App.isLogin))
+
+        isLogin = SPUtils.getBoolean(this,App.isLogin);
+
+        if (isLogin)
         startActivity(new Intent(this,OperateActivity.class));
         else
         startActivity(new Intent(this,LoginActivity.class));

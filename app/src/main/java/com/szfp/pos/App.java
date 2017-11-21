@@ -6,9 +6,6 @@ import android.util.Log;
 
 import com.pos.device.SDKManager;
 import com.pos.device.SDKManagerCallback;
-import com.pos.device.ped.KeySystem;
-import com.pos.device.ped.KeyType;
-import com.pos.device.ped.Ped;
 import com.szfp.pos.utils.AidlUtil;
 import com.szfp.utils.Utils;
 
@@ -37,14 +34,14 @@ public class App extends Application {
         Log.d("Model",model);
         if (model.equals("V1-B18"))
         AidlUtil.getInstance().connectPrinterService(this);
-
-//        SDKManager.init(this, new SDKManagerCallback() {
-//            @Override
-//            public void onFinish() {
-//
-//            }
-//        });
-
-
+        if (model.equals("NEW9220"))
+        SDKManager.init(this, new SDKManagerCallback() {
+            @Override
+            public void onFinish() {
+                Log.d("SDKMANAGER","SUCCESS");
+            }
+        });
     }
+
+
 }

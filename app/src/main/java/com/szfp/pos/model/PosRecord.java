@@ -21,10 +21,10 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class PosRecord implements Serializable {
     static final long serialVersionUID = 42L;
-    @Id
+    @Id(autoincrement = true)
     private Long id;
     private String tsn;
-    private Float totalStake;
+    private int totalStake;
     private Date createTime;
     private String tID;
     private Date  matchPlayed;
@@ -32,8 +32,8 @@ public class PosRecord implements Serializable {
     private Date validity;
 //    List<Item> list;
     private String list;
-    @Generated(hash = 16260488)
-    public PosRecord(Long id, String tsn, Float totalStake, Date createTime,
+    @Generated(hash = 495716509)
+    public PosRecord(Long id, String tsn, int totalStake, Date createTime,
             String tID, Date matchPlayed, String closingTime, Date validity,
             String list) {
         this.id = id;
@@ -61,10 +61,10 @@ public class PosRecord implements Serializable {
     public void setTsn(String tsn) {
         this.tsn = tsn;
     }
-    public Float getTotalStake() {
+    public int getTotalStake() {
         return this.totalStake;
     }
-    public void setTotalStake(Float totalStake) {
+    public void setTotalStake(int totalStake) {
         this.totalStake = totalStake;
     }
     public Date getCreateTime() {

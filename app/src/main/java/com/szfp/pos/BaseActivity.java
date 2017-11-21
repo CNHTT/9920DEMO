@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -264,4 +265,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract void showConnecting();
 
     protected abstract void showConnectedDeviceName(String mConnectedDeviceName);
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_print:
+                showDeviceList();
+                break;
+            case  android.R.id.home:
+                onBackPressed();
+                // 处理返回逻辑
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

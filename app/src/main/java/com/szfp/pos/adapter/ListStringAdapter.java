@@ -38,7 +38,7 @@ public class ListStringAdapter extends BaseListAdapter<String> {
         return convertView;
     }
 
-    static class ViewHolder {
+      static class ViewHolder {
         @BindView(R.id.lay_tv)
         TextView layTv;
 
