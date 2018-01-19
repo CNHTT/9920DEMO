@@ -9,13 +9,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.gson.reflect.TypeToken;
 import com.szfp.pos.adapter.ListStringAdapter;
 import com.szfp.pos.model.Item;
 import com.szfp.pos.model.PosRecord;
@@ -33,7 +31,6 @@ import com.szfp.view.flow.FlowAdapter;
 import com.szfp.view.flow.FlowTagLayout;
 import com.szfp.view.flow.OnTagSelectListener;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -58,7 +55,7 @@ public class SelectActivity extends BaseActivity {
     Toolbar toolbar;
     private String numbersStr;
     private List<String> numbers;
-    private List<String> rsults;
+    private List<String> rsults =new ArrayList<>();
     private List<Integer> list = new ArrayList<>();
     private FlowAdapter flowAdapter;
     private StringBuffer str;
@@ -71,7 +68,7 @@ public class SelectActivity extends BaseActivity {
     private ListStringAdapter adapter;
     private List<String> listString;
     private DialogEditSureCancel editDialog;
-
+    private int maxSelectSize;
     private Item item;
     private PosRecord posRecord;
     private String posRecordStr;
@@ -92,31 +89,34 @@ public class SelectActivity extends BaseActivity {
 
         posRecordStr = SPUtils.getContent(this, PrintFont.POSRECORDSTR);
 
+        maxSelectSize = getIntent().getIntExtra("maxSelectSize",49);
 
-        if (isNullString(posRecordStr)){
+        if (isNullString(posRecordStr)) {
             posRecord = new PosRecord();
-            posRecord.setTsn(TimeUtils.generateSequenceNo());
+            posRecord.setSn(TimeUtils.generateSequenceNo());
             posRecord.setCreateTime(new Date());
             posRecord.setMatchPlayed(TimeUtils.getCurTimeDate());
             posRecord.setMatchPlayed(TimeUtils.getLastDayWeek());
             posRecord.setValidity(TimeUtils.getLastDayMonth());
-            posRecord.setTID(App.TID);
+            posRecord.setOperator(App.TID);
+            posRecord.setSubmitTime(posRecord.getCreateTime());
 
 
             items = new ArrayList<>();
-        }else {
-            posRecord = (PosRecord) JsonUtil.stringToObject(posRecordStr,PosRecord.class);
-            if (isNullString(posRecord.getList())){
+        } else {
+            posRecord = (PosRecord) JsonUtil.stringToObject(posRecordStr, PosRecord.class);
+            if (isNullString(posRecord.getList())) {
                 items = new ArrayList<>();
-            }else {
-                items  = JsonUtil .stringToList(posRecord.getList(),Item.class);
+            } else {
+                items = JsonUtil.stringToList(posRecord.getList(), Item.class);
             }
         }
 
 
-
         item = (Item) getIntent().getSerializableExtra("item");
-        toolbar.setTitle(item.getGameType()+">"+item.getGameOption()+">"+item.getOldType());
+
+        if (item.getUnder()==null)toolbar.setTitle(item.getGameType() );
+        else toolbar.setTitle(item.getGameType() + ">" + item.getUnder());
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -131,19 +131,13 @@ public class SelectActivity extends BaseActivity {
             public void onItemSelect(FlowTagLayout parent, List<Integer> selectedList) {
                 str = new StringBuffer();
                 list = selectedList;
-                for (int i = 0; i <list.size() ; i++) {
-                    list.set(i,list.get(i)+1);
-
+                rsults= new ArrayList<>();
+                for (int i = 0; i < list.size(); i++) {
+                    rsults.add( numbers.get(list.get(i)) );
                 }
                 Log.d("SELECT", selectedList.toString());
-                for (int i = 0; i < list.size(); i++) {
-                    if (i == 0) {
-                        str.append(list.get(0));
-                    } else if (i == list.size() - 1) {
-                        if (list.size() != 1)
-                            str.append("-" + list.get(list.size() - 1));
-                    } else str.append("-" + list.get(i) + "-");
-
+                for (int i = 0; i < rsults.size(); i++) {
+                    str.append(rsults.get(i)+" ");
                 }
 
 
@@ -152,7 +146,7 @@ public class SelectActivity extends BaseActivity {
             }
         });
 
-        flNumber.setMaxSelectSize(20);
+        flNumber.setMaxSelectSize(maxSelectSize);
 
 
     }
@@ -184,8 +178,7 @@ public class SelectActivity extends BaseActivity {
             switch (v.getId()) {
                 case R.id.tv_sure:
                     amountStr = editDialog.getEditText().getText().toString();
-                    if (isNullString(amountStr))
-                    {
+                    if (isNullString(amountStr)) {
                         ToastUtils.showToast("Please input amount");
                         return;
                     }
@@ -193,12 +186,12 @@ public class SelectActivity extends BaseActivity {
                     amount = Integer.parseInt(amountStr);
 
                     item.setAmount(amount);
-                    item.setList(list);
+                    item.setList(rsults);
 
                     items.add(item);
                     posRecord.setList(JsonUtil.objectToString(items));
-                    posRecord.setTotalStake(posRecord.getTotalStake()+amount);
-                    SPUtils.putString(SelectActivity.this,PrintFont.POSRECORDSTR,JsonUtil.objectToString(posRecord));
+                    posRecord.setTotalStake(posRecord.getTotalStake() + amount);
+                    SPUtils.putString(SelectActivity.this, PrintFont.POSRECORDSTR, JsonUtil.objectToString(posRecord));
 
                     if (editDialog != null) editDialog.cancel();
                     showNext();
@@ -225,7 +218,7 @@ public class SelectActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     finish();
-                    startActivity( new Intent(SelectActivity.this,StepActivity.class));
+                    startActivity(new Intent(SelectActivity.this, StepActivity.class));
                     printDialog.cancel();
                 }
             });
@@ -234,13 +227,13 @@ public class SelectActivity extends BaseActivity {
                 public void onClick(View v) {
                     printDialog.cancel();
                     finish();
-                    Intent intent = new Intent(SelectActivity.this,ResultActivity.class);
+                    Intent intent = new Intent(SelectActivity.this, ResultActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("POS",posRecord);
+                    bundle.putSerializable("POS", posRecord);
                     intent.putExtras(bundle);
                     startActivity(intent);
-        }
-    });
+                }
+            });
         }
         printDialog.show();
     }

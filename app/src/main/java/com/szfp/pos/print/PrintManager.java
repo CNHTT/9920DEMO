@@ -233,7 +233,7 @@ public class PrintManager {
         Paint paint = new Paint() ;
 
         setFontStyle(paint , 3 , true);
-        canvas.drawText("TSN:"+posRecord.getTsn()+"(NO)" , paint);
+        canvas.drawText("TSN:"+posRecord.getSn()+"(NO)" , paint);
         setFontStyle(paint , 2 , true);
         canvas.drawText(App.companyName , paint);
         printLine(paint , canvas);
@@ -252,7 +252,7 @@ public class PrintManager {
         canvas.drawText("WeekNO:"+1, paint);
 
         setFontStyle(paint , 2 , true);
-        canvas.drawText( printTwoData("TerminalID :",posRecord.getTID()), paint);
+        canvas.drawText( printTwoData("TerminalID :",posRecord.getOperator()), paint);
         canvas.drawText( printTwoData("MatchPlayed:",TimeUtils.date3String(posRecord.getMatchPlayed())), paint);
         canvas.drawText( printTwoData("ClosingTime:",posRecord.getClosingTime()), paint);
         canvas.drawText( printTwoData("Validity   :",TimeUtils.date3String(posRecord.getValidity())), paint);
@@ -262,7 +262,9 @@ public class PrintManager {
         Item item;
         for (int i = 0; i <list.size() ; i++) {
             item = list.get(i);
-            canvas.drawText( item.getGameType()+" "+item.getGameOption()+" "+item.getOldType()  + "   ＄ " +item.getAmount(), paint);
+            if (item.getUnder()==null)
+            canvas.drawText( item.getGameType()+ "   ＄ " +item.getAmount(), paint);else
+            canvas.drawText( item.getGameType()+" "+item.getUnder()  + "   ＄ " +item.getAmount(), paint);
             canvas.drawText( item.getList().toString(), paint);
         }
         printLine(paint,canvas);
@@ -271,11 +273,11 @@ public class PrintManager {
         canvas.drawText( "Total Stake:         $" +posRecord.getTotalStake(), paint);
         printLine(paint,canvas);
         setFontStyle(paint , 2 , true);
-        canvas.drawText( "TID:" +posRecord.getTID()+"   "+TimeUtils.date5String(posRecord.getCreateTime()), paint);
+        canvas.drawText( "TID:" +posRecord.getOperator()+"   "+TimeUtils.date5String(posRecord.getCreateTime()), paint);
 
 
         try {
-            canvas.drawBitmap(CreateOneDCode(posRecord.getTsn()) , paint);
+            canvas.drawBitmap(CreateOneDCode(posRecord.getSn()) , paint);
         } catch (WriterException e) {
             e.printStackTrace();
         }

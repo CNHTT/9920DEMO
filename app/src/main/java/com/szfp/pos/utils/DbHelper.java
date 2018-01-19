@@ -22,7 +22,7 @@ public class DbHelper {
     public static PosRecord getPosRecordByTsn(String tsn) {
         PosRecord posRecord;
         try {
-            posRecord= GreenDaoManager.getInstance().getSession().getPosRecordDao().queryBuilder().where(PosRecordDao.Properties.Tsn.eq(tsn)).build().unique();
+            posRecord= GreenDaoManager.getInstance().getSession().getPosRecordDao().queryBuilder().where(PosRecordDao.Properties.Sn.eq(tsn)).build().unique();
         }catch (Exception e){
             Logger.debug(e.toString());
             return null;

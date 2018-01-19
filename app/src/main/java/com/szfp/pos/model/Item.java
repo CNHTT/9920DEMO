@@ -8,11 +8,13 @@ import java.util.List;
  */
 
 public class Item implements Serializable {
-    private String gameType;
-    private String gameOption;
-    private String OldType;
-    private List<Integer> list;
+    private String type;
+    private String under;
+    private List<String> games;
     private int amount;
+
+
+    private String OldType;
     private String title;
 
     public String getTitle() {
@@ -24,19 +26,19 @@ public class Item implements Serializable {
     }
 
     public String getGameType() {
-        return gameType;
+        return type;
     }
 
     public void setGameType(String gameType) {
-        this.gameType = gameType;
+        this.type = gameType;
     }
 
-    public String getGameOption() {
-        return gameOption;
+    public String getUnder() {
+        return under;
     }
 
-    public void setGameOption(String gameOption) {
-        this.gameOption = gameOption;
+    public void setUnder(String under) {
+        this.under = under;
     }
 
     public String getOldType() {
@@ -47,12 +49,12 @@ public class Item implements Serializable {
         OldType = oldType;
     }
 
-    public List<Integer> getList() {
-        return list;
+    public List<String> getList() {
+        return games;
     }
 
-    public void setList(List<Integer> list) {
-        this.list = list;
+    public void setList(List<String> list) {
+        this.games = list;
     }
 
     public int getAmount() {

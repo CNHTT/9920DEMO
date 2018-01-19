@@ -25,14 +25,15 @@ public class PosRecordDao extends AbstractDao<PosRecord, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Tsn = new Property(1, String.class, "tsn", false, "TSN");
+        public final static Property Sn = new Property(1, String.class, "sn", false, "SN");
         public final static Property TotalStake = new Property(2, int.class, "totalStake", false, "TOTAL_STAKE");
         public final static Property CreateTime = new Property(3, java.util.Date.class, "createTime", false, "CREATE_TIME");
-        public final static Property TID = new Property(4, String.class, "tID", false, "T_ID");
+        public final static Property Operator = new Property(4, String.class, "operator", false, "OPERATOR");
         public final static Property MatchPlayed = new Property(5, java.util.Date.class, "matchPlayed", false, "MATCH_PLAYED");
         public final static Property ClosingTime = new Property(6, String.class, "closingTime", false, "CLOSING_TIME");
         public final static Property Validity = new Property(7, java.util.Date.class, "validity", false, "VALIDITY");
-        public final static Property List = new Property(8, String.class, "list", false, "LIST");
+        public final static Property SubmitTime = new Property(8, java.util.Date.class, "SubmitTime", false, "SUBMIT_TIME");
+        public final static Property List = new Property(9, String.class, "list", false, "LIST");
     }
 
 
@@ -49,14 +50,15 @@ public class PosRecordDao extends AbstractDao<PosRecord, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"POS_RECORD\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"TSN\" TEXT," + // 1: tsn
+                "\"SN\" TEXT," + // 1: sn
                 "\"TOTAL_STAKE\" INTEGER NOT NULL ," + // 2: totalStake
                 "\"CREATE_TIME\" INTEGER," + // 3: createTime
-                "\"T_ID\" TEXT," + // 4: tID
+                "\"OPERATOR\" TEXT," + // 4: operator
                 "\"MATCH_PLAYED\" INTEGER," + // 5: matchPlayed
                 "\"CLOSING_TIME\" TEXT," + // 6: closingTime
                 "\"VALIDITY\" INTEGER," + // 7: validity
-                "\"LIST\" TEXT);"); // 8: list
+                "\"SUBMIT_TIME\" INTEGER," + // 8: SubmitTime
+                "\"LIST\" TEXT);"); // 9: list
     }
 
     /** Drops the underlying database table. */
@@ -74,9 +76,9 @@ public class PosRecordDao extends AbstractDao<PosRecord, Long> {
             stmt.bindLong(1, id);
         }
  
-        String tsn = entity.getTsn();
-        if (tsn != null) {
-            stmt.bindString(2, tsn);
+        String sn = entity.getSn();
+        if (sn != null) {
+            stmt.bindString(2, sn);
         }
         stmt.bindLong(3, entity.getTotalStake());
  
@@ -85,9 +87,9 @@ public class PosRecordDao extends AbstractDao<PosRecord, Long> {
             stmt.bindLong(4, createTime.getTime());
         }
  
-        String tID = entity.getTID();
-        if (tID != null) {
-            stmt.bindString(5, tID);
+        String operator = entity.getOperator();
+        if (operator != null) {
+            stmt.bindString(5, operator);
         }
  
         java.util.Date matchPlayed = entity.getMatchPlayed();
@@ -105,9 +107,14 @@ public class PosRecordDao extends AbstractDao<PosRecord, Long> {
             stmt.bindLong(8, validity.getTime());
         }
  
+        java.util.Date SubmitTime = entity.getSubmitTime();
+        if (SubmitTime != null) {
+            stmt.bindLong(9, SubmitTime.getTime());
+        }
+ 
         String list = entity.getList();
         if (list != null) {
-            stmt.bindString(9, list);
+            stmt.bindString(10, list);
         }
     }
 
@@ -120,9 +127,9 @@ public class PosRecordDao extends AbstractDao<PosRecord, Long> {
             stmt.bindLong(1, id);
         }
  
-        String tsn = entity.getTsn();
-        if (tsn != null) {
-            stmt.bindString(2, tsn);
+        String sn = entity.getSn();
+        if (sn != null) {
+            stmt.bindString(2, sn);
         }
         stmt.bindLong(3, entity.getTotalStake());
  
@@ -131,9 +138,9 @@ public class PosRecordDao extends AbstractDao<PosRecord, Long> {
             stmt.bindLong(4, createTime.getTime());
         }
  
-        String tID = entity.getTID();
-        if (tID != null) {
-            stmt.bindString(5, tID);
+        String operator = entity.getOperator();
+        if (operator != null) {
+            stmt.bindString(5, operator);
         }
  
         java.util.Date matchPlayed = entity.getMatchPlayed();
@@ -151,9 +158,14 @@ public class PosRecordDao extends AbstractDao<PosRecord, Long> {
             stmt.bindLong(8, validity.getTime());
         }
  
+        java.util.Date SubmitTime = entity.getSubmitTime();
+        if (SubmitTime != null) {
+            stmt.bindLong(9, SubmitTime.getTime());
+        }
+ 
         String list = entity.getList();
         if (list != null) {
-            stmt.bindString(9, list);
+            stmt.bindString(10, list);
         }
     }
 
@@ -166,14 +178,15 @@ public class PosRecordDao extends AbstractDao<PosRecord, Long> {
     public PosRecord readEntity(Cursor cursor, int offset) {
         PosRecord entity = new PosRecord( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // tsn
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // sn
             cursor.getInt(offset + 2), // totalStake
             cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // createTime
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // tID
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // operator
             cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)), // matchPlayed
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // closingTime
             cursor.isNull(offset + 7) ? null : new java.util.Date(cursor.getLong(offset + 7)), // validity
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // list
+            cursor.isNull(offset + 8) ? null : new java.util.Date(cursor.getLong(offset + 8)), // SubmitTime
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // list
         );
         return entity;
     }
@@ -181,14 +194,15 @@ public class PosRecordDao extends AbstractDao<PosRecord, Long> {
     @Override
     public void readEntity(Cursor cursor, PosRecord entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setTsn(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setSn(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setTotalStake(cursor.getInt(offset + 2));
         entity.setCreateTime(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
-        entity.setTID(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setOperator(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setMatchPlayed(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));
         entity.setClosingTime(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setValidity(cursor.isNull(offset + 7) ? null : new java.util.Date(cursor.getLong(offset + 7)));
-        entity.setList(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setSubmitTime(cursor.isNull(offset + 8) ? null : new java.util.Date(cursor.getLong(offset + 8)));
+        entity.setList(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
      }
     
     @Override

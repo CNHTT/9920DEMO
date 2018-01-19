@@ -33,7 +33,7 @@
         android:paddingLeft="20dp"
         android:text=""
         android:textColor="@color/black"
-        android:textColorHint="@color/sbc_snippet_text"/>
+        android:textColorHint="@color/_8c"/>
 
     <TextView
         android:id="@+id/textView12"

@@ -20,6 +20,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 apply plugin: 'org.greenrobot.greendao'
 greendao {
@@ -28,6 +32,8 @@ greendao {
     targetGenDir 'src/main/java'
 
 }
+
+def retrofitVersion = '2.0.1'
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
@@ -43,9 +49,17 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'io.reactivex.rxjava2:rxjava:2.0.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
+    compile "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    compile("com.squareup.retrofit2:converter-simplexml:$retrofitVersion")
+            {
+                exclude group: 'xpp3', module: 'xpp3'
+                exclude group: 'stax', module: 'stax-api'
+                exclude group: 'stax', module: 'stax'
+            }
     provided files('extlib/9220sdk.jar')
+    compile 'com.lzy.net:okgo:3.0.4'
 }

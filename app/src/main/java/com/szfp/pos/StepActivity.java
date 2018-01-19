@@ -2,12 +2,11 @@ package com.szfp.pos;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.szfp.pos.adapter.ListStringAdapter;
 import com.szfp.pos.model.Item;
@@ -21,40 +20,43 @@ import butterknife.ButterKnife;
 
 public class StepActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
     @BindView(R.id.lv_game_type)
     ListView lvGameType;
     @BindView(R.id.ll_game_type)
     LinearLayout llGameType;
-    @BindView(R.id.lv_game_type_option)
-    ListView lvGameTypeOption;
-    @BindView(R.id.ll_game_option)
-    LinearLayout llGameOption;
-    @BindView(R.id.lv_game_odd_type)
-    ListView lvGameOddType;
-    @BindView(R.id.ll_game_odd_type)
-    LinearLayout llGameOddType;
-    @BindView(R.id.tv_option)
-    TextView tvOption;
-    @BindView(R.id.tv_odd)
-    TextView tvOdd;
+//    @BindView(R.id.lv_game_type_option)
+//    ListView lvGameTypeOption;
+//    @BindView(R.id.ll_game_option)
+//    LinearLayout llGameOption;
+//    @BindView(R.id.lv_game_odd_type)
+//    ListView lvGameOddType;
+//    @BindView(R.id.ll_game_odd_type)
+//    LinearLayout llGameOddType;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.lv_game_nap)
+    ListView lvGameNap;
+    @BindView(R.id.ll_game_nap)
+    LinearLayout llGameNap;
 
 
     private ListStringAdapter gameTypeAdapter;
     private ListStringAdapter gameTypeOptionAdapter;
     private ListStringAdapter gameOddTypeAdapter;
+    private ListStringAdapter gameNpaTypeAdapter;
 
     private List<String> gameTypeList;
     private List<String> gameTypeOptionList;
     private List<String> gameOddTypeList;
+    private List<String> gameNpaTypeList;
 
     private int type = 0;
 
+    private int maxSelectSize =49;
 
     private String gameTypeStr;
     private String gameOptionStr;
-    private String gameOddStr;
+    private String under;
 
     private Item item = new Item();
 
@@ -85,23 +87,31 @@ public class StepActivity extends BaseActivity implements AdapterView.OnItemClic
     }
 
     private void initData() {
+
+
+        toolbar.setTitle(R.string.please_select);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         gameTypeList = Arrays.asList(getResources().getStringArray(R.array.array_game_type));
-        gameTypeOptionList = Arrays.asList(getResources().getStringArray(R.array.array_game_option));
         gameOddTypeList = Arrays.asList(getResources().getStringArray(R.array.array_under));
+        gameNpaTypeList = Arrays.asList(getResources().getStringArray(R.array.array_game_nap));
 
         gameTypeAdapter = new ListStringAdapter(this, gameTypeList);
-        gameTypeOptionAdapter = new ListStringAdapter(this, gameTypeOptionList);
         gameOddTypeAdapter = new ListStringAdapter(this, gameOddTypeList);
+        gameNpaTypeAdapter = new ListStringAdapter(this, gameNpaTypeList);
 
-        lvGameOddType.setAdapter(gameOddTypeAdapter);
+//       / lvGameOddType.setAdapter(gameOddTypeAdapter);
         lvGameType.setAdapter(gameTypeAdapter);
-        lvGameTypeOption.setAdapter(gameTypeOptionAdapter);
+        lvGameNap.setAdapter(gameNpaTypeAdapter);
 
 
         lvGameType.setOnItemClickListener(this);
-        lvGameTypeOption.setOnItemClickListener(this);
-
-        lvGameOddType.setOnItemClickListener(this);
+//        lvGameTypeOption.setOnItemClickListener(this);
+        lvGameNap.setOnItemClickListener(this);
+//        lvGameOddType.setOnItemClickListener(this);
     }
 
     @Override
@@ -109,75 +119,87 @@ public class StepActivity extends BaseActivity implements AdapterView.OnItemClic
         switch (parent.getId()) {
             case R.id.lv_game_type: //select game type NAP/PERM OR GROUPING
                 gameTypeStr = gameTypeList.get(position);
-                tvTitle.setText(gameTypeStr+">");
                 item.setGameType(gameTypeStr);
+                toolbar.setTitle(gameTypeStr);
                 type = 1;
                 showSelect();
                 break;
-            case R.id.lv_game_type_option://select game option 100-1 or 80-1 or 40-1
-                gameOptionStr = gameTypeOptionList.get(position);
-                tvOption.setText(gameOptionStr);
+            case R.id.lv_game_nap: //select game type NAP/PERM OR GROUPING
+                under = gameNpaTypeList.get(position);
+                item.setUnder(under);
+                toolbar.setTitle( gameTypeStr + ">"+under);
                 type = 2;
-                item.setGameOption(gameOptionStr);
+                maxSelectSize = position+3;
                 showSelect();
-                break;
-            case R.id.lv_game_odd_type://select odd type u3,u4,u5,u6
-                gameOddStr = gameOddTypeList.get(position);
-                tvOdd.setText("("+gameOddStr+")");
-
-                item.setOldType(gameOddStr);
-
-
-
-
-                //select games selection 8-9-16-23-25-27- etc
-                Intent intent = new Intent();
-
-                Bundle  bundle = new Bundle ();
-                bundle.putSerializable("item",item);
-                intent.putExtras(bundle);
-                intent.setClass(StepActivity.this,SelectActivity.class);
-                startActivity(intent);
                 break;
         }
 
     }
 
     private void showSelect() {
-        switch (type){
+        switch (type) {
             case 0:
                 llGameType.setVisibility(View.VISIBLE);
-                llGameOption.setVisibility(View.GONE);
-                llGameOddType.setVisibility(View.GONE);
+                llGameNap.setVisibility(View.GONE);
+//                llGameOption.setVisibility(View.GONE);
+//                llGameOddType.setVisibility(View.GONE);
                 break;
             case 1:
-                llGameType.setVisibility(View.GONE);
-                llGameOption.setVisibility(View.VISIBLE);
-                llGameOddType.setVisibility(View.GONE);
+
+                if (gameTypeStr.equals("NAP")){
+                    llGameType.setVisibility(View.GONE);
+                    llGameNap.setVisibility(View.VISIBLE);
+//                    llGameOption.setVisibility(View.GONE);
+//                    llGameOddType.setVisibility(View.GONE);
+                }else {
+//
+//                    llGameType.setVisibility(View.GONE);
+//                    llGameNap.setVisibility(View.GONE);
+//                    llGameOption.setVisibility(View.VISIBLE);
+//                    llGameOddType.setVisibility(View.GONE);
+                    //select games selection 8-9-16-23-25-27- etc
+                    Intent intent = new Intent();
+
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("item", item);
+                    bundle.putInt("maxSelectSize", 49);
+                    intent.putExtras(bundle);
+                    intent.setClass(StepActivity.this, SelectActivity.class);
+                    startActivity(intent);
+                }
+
                 break;
             case 2:
-                llGameType.setVisibility(View.GONE);
-                llGameOption.setVisibility(View.GONE);
-                llGameOddType.setVisibility(View.VISIBLE);
+//                llGameType.setVisibility(View.GONE);
+//                llGameNap.setVisibility(View.GONE);
+//                llGameOption.setVisibility(View.GONE);
+//                llGameOddType.setVisibility(View.VISIBLE);
+                Intent intent = new Intent();
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("item", item);
+                bundle.putInt("maxSelectSize", maxSelectSize);
+                intent.putExtras(bundle);
+                intent.setClass(StepActivity.this, SelectActivity.class);
+                startActivity(intent);
                 break;
         }
     }
 
     @Override
     public void onBackPressed() {
-        switch (type){
+        switch (type) {
             case 0:
                 super.onBackPressed();
                 break;
             case 1:
-                type =0;
+                type = 0;
                 showSelect();
-                tvOption.setText("");
+                toolbar.setTitle(gameTypeStr + ">");
                 break;
             case 2:
-                type =1;
-                showSelect();
-                tvOdd.setText("");
+                type = 1;
+                toolbar.setTitle( gameTypeStr + ">"+under);
                 break;
         }
     }

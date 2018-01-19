@@ -4,14 +4,20 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.extra.retrofit.HttpBuilder;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.szfp.pos.adapter.ItemAdapter;
 import com.szfp.pos.model.Item;
 import com.szfp.pos.model.LoginRecord;
+import com.szfp.pos.model.Pos;
 import com.szfp.pos.model.PosRecord;
 import com.szfp.pos.print.PrintFont;
 import com.szfp.pos.print.PrintManager;
@@ -26,6 +32,7 @@ import com.szfp.utils.ToastUtils;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -92,7 +99,7 @@ public class ResultActivity extends BaseActivity {
 
 
         items  = JsonUtil .stringToList(posRecord.getList(),Item.class);
-        toolbar.setTitle(posRecord.getTsn());
+        toolbar.setTitle(posRecord.getSn());
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -127,18 +134,54 @@ public class ResultActivity extends BaseActivity {
                 break;
             case R.id.bt_enter:
                 if (is){
+
+
+
+
                     SPUtils.putInt(this,PrintFont.soldQty,SPUtils.getInt(this, PrintFont.soldQty)+1);
                     SPUtils.putInt(this,PrintFont.soldAmount,SPUtils.getInt(this, PrintFont.soldAmount)+posRecord.getTotalStake());
+
+                    posRecord.setDatas(items);
+                    Pos pos = new Pos();
+                    pos.setSn(posRecord.getSn());
+                    pos.setDatas(posRecord.getDatas());
+                    pos.setOperator(posRecord.getOperator());
+                    pos.setSubmitTime(posRecord.getCreateTime());
+//                    OkGo.<String>post("http://pos-stag.appspot.com/playGame_")
+//                            .tag(this)
+//                            .params("value",JsonUtil.objectToString(pos))
+//                            .execute(new StringCallback() {
+//                                @Override
+//                                public void onSuccess(Response<String> response) {
+//                                    Log.d("SSS",response.body().toString());
+//                                }
+//                            });
+//                    byte[] b = JsonUtil.objectToString(pos).getBytes();     //获取数据的bytes
+//                    String url = "192.168.1.117:8080/playGame.p";
+////                    String url = "http://pos-stag.appspot.com/playGame_";
+//                    try {
+//                        new HttpBuilder(url)
+//                                .params("value",info)
+//                                .success( (s) ->{
+//                                    Log.d("SUCCESS",s);
+//                                })
+//                                .error( e  ->{
+//                                    Log.d("EEEE",e.toString());
+//                                })
+//                                .post();
+//                    } catch (UnsupportedEncodingException e) {
+//                        e.printStackTrace();
+//                    }
+
 
                     DbHelper.AddPosRecord(posRecord);
                     PrintManager.getmInstance(ResultActivity.this).printPosRecord(posRecord);
 
+                    Log.d("RESULR",JsonUtil.objectToString(posRecord));
                     AppManager.getAppManager().finishAllActivityAndExit(this);
                     SPUtils.putString(this,PrintFont.POSRECORDSTR,"");
                     startActivity(new Intent(this,OperateActivity.class));
                 }else PrintManager.getmInstance(ResultActivity.this).printPosRecord(posRecord);
-
-
 //                enter();
                 break;
         }

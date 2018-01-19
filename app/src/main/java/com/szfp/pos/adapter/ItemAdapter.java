@@ -51,7 +51,9 @@ public class ItemAdapter extends BaseListAdapter<Item> {
 
         public void setData(Item data) {
 
-            mTv_title.setText(data.getGameType()+" "+data.getGameOption()+" "+data.getOldType()  + "   ＄ " +data.getAmount());
+            if (data.getUnder()!=null)
+            mTv_title.setText(data.getGameType()+" "+data.getUnder()  + "   ＄ " +data.getAmount());
+            else mTv_title.setText(data.getGameType()  + "   ＄ " +data.getAmount());
             mTv_result.setText(data.getList().toString());
         }
     }
